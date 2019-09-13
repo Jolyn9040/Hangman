@@ -1,0 +1,168 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Project</title>
+</head>
+<body>
+	<style>
+		.buttons {
+			width: 40%;
+			text-align: center;
+			background-color: lightcoral; 
+		}
+	</style>
+	<table border="1" #000 solid  class="buttons">
+		<tr>
+			<td style="text-align: right" colspan="4">
+				<p>Score:<input type="text" id="Score" size="1" placeholder="0"></p>
+				<p>Fails (6):<input type="text" id="Fails" size="1" placeholder="0"></p>
+			</td>
+			<td style="text-align: center" colspan="7">
+				<p><input type="text" id="firstbox" size="25" placeholder="Welcome to Hangman!"></p>
+				<p><input type="text" id="secondbox" size="25" placeholder="Click Start to get a word."></p>
+			</td>
+			<td style="text-align: center" colspan="2">
+				<input type="button" id="btnstart" value="Start" onclick="StartGame()">
+			</td>
+		</tr>
+		<tr>
+			<td><input type="button" id="btnA" value="A" onclick="findLetter('A')"></td>
+			<td><input type="button" id="btnB" value="B" onclick="findLetter('B')"></td>
+			<td><input type="button" id="btnC" value="C" onclick="findLetter('C')"></td>
+			<td><input type="button" id="btnD" value="D" onclick="findLetter('D')"></td>
+			<td><input type="button" id="btnE" value="E" onclick="findLetter('E')"></td>
+			<td><input type="button" id="btnF" value="F" onclick="findLetter('F')"></td>
+			<td><input type="button" id="btnG" value="G" onclick="findLetter('G')"></td>
+			<td><input type="button" id="btnH" value="H" onclick="findLetter('H')"></td>
+			<td><input type="button" id="btnI" value="I" onclick="findLetter('I')"></td>
+			<td><input type="button" id="btnJ" value="J" onclick="findLetter('J')"></td>
+			<td><input type="button" id="btnK" value="K" onclick="findLetter('K')"></td>
+			<td><input type="button" id="btnL" value="L" onclick="findLetter('L')"></td>
+			<td><input type="button" id="btnM" value="M" onclick="findLetter('M')"></td>
+		</tr>
+		<tr>
+			<td><input type="button" id="btnN" value="N" onclick="findLetter('N')"></td>
+			<td><input type="button" id="btnO" value="O" onclick="findLetter('O')"></td>
+			<td><input type="button" id="btnP" value="P" onclick="findLetter('P')"></td>
+			<td><input type="button" id="btnQ" value="Q" onclick="findLetter('Q')"></td>
+			<td><input type="button" id="btnR" value="R" onclick="findLetter('R')"></td>
+			<td><input type="button" id="btnS" value="S" onclick="findLetter('S')"></td>
+			<td><input type="button" id="btnT" value="T" onclick="findLetter('T')"></td>
+			<td><input type="button" id="btnU" value="U" onclick="findLetter('U')"></td>
+			<td><input type="button" id="btnV" value="V" onclick="findLetter('V')"></td>
+			<td><input type="button" id="btnW" value="W" onclick="findLetter('W')"></td>
+			<td><input type="button" id="btnX" value="X" onclick="findLetter('X')"></td>
+			<td><input type="button" id="btnY" value="Y" onclick="findLetter('Y')"></td>
+			<td><input type="button" id="btnZ" value="Z" onclick="findLetter('Z')"></td>
+		</tr>
+	</table>
+	<script type="text/javascript">
+		var upperword;
+		var fails;
+		var score=0;
+		document.getElementById("Score").value = score;
+		var word = ["applicaton","designer","development","internship","appartment","assignment","international","programming","document","industrial","department","resign","adminstrator","restaurants","romper","suggestion","sarcastic","church","chirstian","legit","concert","democradic","demostration","decoration","enthusisiasm","assistant","racism","misunderstanding","extraordinary","resistance","composition","company","redaundant","specification","cisgender","template","statement","description","majority","method","minority","society","examination","position","disaster","trading", "editing","donation","accident","anniversary","relationship","friendship","surgery"];
+		var answer = [];
+		var revealed = [];
+		var gameOver = 0;
+		var StartAlr = 0;
+		var winalr =0;
+		function StartGame(){
+			winalr = 0;
+			if (StartAlr == 1) {
+				alert("You have already Started.");
+			}
+			else {
+				fails = 0; // reset fails
+				gameOver = 0;
+				document.getElementById("Fails").value = fails;
+				document.getElementById("firstbox").value = "";
+				document.getElementById("secondbox").value = " ";
+				var index = Math.floor(Math.random() * word.length);
+				upperword = word[index].toUpperCase(); // change to upper case
+				StartAlr = 1;
+				for (i=0; i< upperword.length; i++) {
+					answer[i] = upperword.charAt(i);
+				}
+				var first =	upperword.charAt(0); //get the first character
+				var last = upperword.charAt(upperword.length-1);//get the last character
+				var i;
+				for (i= 0; i < upperword.length; i++) {
+					if (first == upperword.charAt(i) || last == upperword.charAt(i)){
+						document.getElementById("firstbox").value += upperword.charAt(i) + " ";
+						revealed[i] = upperword.charAt(i);
+					}
+					else {
+						document.getElementById("firstbox").value += "_" + " " ; //get the "_"
+						revealed[i] = "_";
+					}
+				}
+			}
+		}
+		function findLetter(character) {
+			try { //try to run the code, if the character in the both box 
+				if (document.getElementById("secondbox").value.indexOf(character) > -1 || document.getElementById("firstbox").value.indexOf(character.toUpperCase()) > -1) {
+					throw "You press " + character + " again.";
+				}
+			}
+			catch(errMsg) { //alret the message
+				alert(errMsg);
+			}
+			if (document.getElementById("secondbox").value.indexOf(character) > -1 || document.getElementById("firstbox").value.indexOf(character.toUpperCase()) > -1) { //check the letter exists in the both box
+				for (j= 0; j < upperword.length; j++) { // checking each character
+					if (character == upperword.charAt(j)) { //get the position
+					revealed[j] = upperword.charAt(j); // update the character at THAT position
+					}
+				}
+			}
+			else{
+				if (gameOver == 1) { // GAME OVER already
+				document.getElementById("secondbox").value = "Click Start to continue.";
+				}
+				else { // HAVEN GAME OVER
+					if (winalr==1) { // win already
+						alert("You Win! Press Start To continue.");
+						winalr = 0;
+					}
+					else {
+						var j;
+						if (upperword.indexOf(character) > -1){ //the letter exists
+							for (j= 0; j < upperword.length; j++) { // checking each character
+								if (character == upperword.charAt(j)) { //get the position
+									revealed[j] = upperword.charAt(j); // update the character at THAT position
+								}
+							}
+							document.getElementById("firstbox").value = ""; //clear the textbox first
+							for (j=0; j<upperword.length;j++) { // check each character again
+								document.getElementById("firstbox").value += revealed[j] + " "; // this will update one by one
+							}
+						}
+						else {
+							document.getElementById("Fails").value = ++fails;
+							document.getElementById("secondbox").value += character + " ";
+						}
+						if (fails == 6) {
+							document.getElementById("firstbox").value = "Correct Answer:" + " " + upperword + " .";
+							document.getElementById("secondbox").value = "game over!";
+							gameOver = 1; //this will add to the game over so that it wil not continue
+							document.getElementById("Score").value = --score;
+							StartAlr = 0;
+						}
+						else {
+							if (document.getElementById("firstbox").value.indexOf("_") == -1) { //placement have no more _
+								document.getElementById("Fails").value = --fails; //so that it wont keep adding on after 6 fails
+								document.getElementById("secondbox").value = "You Win!";
+								winalr = 1;
+								document.getElementById("Score").value = ++score;
+								document.getElementById("Fails").value = 0;
+								StartAlr = 0;
+							}
+						}
+					}
+				}
+			}
+		}
+	</script>
+</body>
+</html>
